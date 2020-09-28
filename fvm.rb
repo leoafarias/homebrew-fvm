@@ -3,7 +3,7 @@ class Fvm < Formula
     homepage "https://github.com/leoafarias/fvm"
     url "https://github.com/leoafarias/fvm/archive/1.3.0-dev.2.tar.gz"
     sha256 "b0e53df50b9b05e15a8f970fa93acf491547b30a274393dbe2cfcfa733eb4eab"
-    version ""
+    version "WILL_BE_REPLACED"
     license "MIT"
   
     depends_on "dart-lang/dart/dart" => :build
