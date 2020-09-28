@@ -19,7 +19,7 @@ class Fvm < Formula
       ENV["PUB_ENVIRONMENT"] = "homebrew:fvm"
   
       system dart/"pub", "get"
-      system dart/"pub", "run", "build_runner", "build", "--delete-conflicting-outputs"
+      
       if Hardware::CPU.is_64_bit?
         # Build a native-code executable on 64-bit systems only. 32-bit Dart
         # doesn't support this.
