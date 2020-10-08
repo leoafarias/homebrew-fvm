@@ -2,7 +2,7 @@ class Fvm < Formula
     desc "Simple cli to manage Flutter SDK versions per project"
     homepage "https://github.com/leoafarias/fvm"
     url "https://github.com/leoafarias/fvm/archive/v1.3.0.tar.gz"
-    sha256 "8653ec9fd2970129c71f3bada0e8cc8c796eaa42686c6c926add1c0496c558b7"
+    sha256 "2257a70d0a2a3ae2f549079d7e73e477057b5c49b111356192446d02f9e9e69f"
     license "MIT"
   
     depends_on "dart-lang/dart/dart" => :build
