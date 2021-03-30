@@ -1,15 +1,16 @@
-class Fvm < Formula
+class FvmAT200Dev3 < Formula
     desc "Simple cli to manage Flutter SDK versions per project"
     homepage "https://github.com/leoafarias/fvm"
-    url "https://github.com/leoafarias/fvm/archive/v1.3.1.tar.gz"
-    sha256 "b8bb1be86f251149541f2884f16f3737c2c920a977e8e8c83ddc017334bf2c10"
+    url "https://github.com/leoafarias/fvm/archive/2.0.0-dev.3.tar.gz"
+    sha256 "b84acf7ac01dbed49a82edab3bdaad73a139ef363668bb14b2bd2c89ba34162f"
     license "MIT"
   
     depends_on "dart-lang/dart/dart" => :build
   
     def install
       dart = Formula["dart-lang/dart/dart"].opt_bin
-      
+      # Switch to CLI
+      Dir.chdir("packages/cli")
   
       pubspec = YAML.safe_load(File.read("pubspec.yaml"))
       version = pubspec["version"]
