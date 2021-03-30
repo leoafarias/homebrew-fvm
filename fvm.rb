@@ -10,7 +10,6 @@ class Fvm < Formula
     def install
       dart = Formula["dart-lang/dart/dart"].opt_bin
       
-  
       pubspec = YAML.safe_load(File.read("pubspec.yaml"))
       version = pubspec["version"]
   
