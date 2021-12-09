@@ -44,15 +44,12 @@ class Fvm < Formula
       bin.install "fvm"
     end
     
-
-
     def _install_script_snapshot
       system _dart/"dart", "compile", "jit-snapshot",
             "-Dversion=#{_version}",
             "-o", "main.dart.app.snapshot",
             "bin/main.dart"
       lib.install "main.dart.app.snapshot"
-
 
       # Copy the version of the Dart VM we used into our lib directory so that if
       # the user upgrades their Dart VM version it doesn't break Sass's snapshot,
