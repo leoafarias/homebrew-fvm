@@ -40,13 +40,13 @@ class Fvm < Formula
     
     
     def _install_native_executable
-      system dart/"dart2native", "-Dversion=#{version}", "bin/main.dart",
+      system _dart/"dart2native", "-Dversion=#{version}", "bin/main.dart",
               "-o", "fvm"
       bin.install "fvm"
     end
 
     def _install_script_snapshot
-      system dart/"dart",
+      system _dart/"dart",
               "-Dversion=#{version}",
               "--snapshot=main.dart.app.snapshot",
               "--snapshot-kind=app-jit",
@@ -56,7 +56,7 @@ class Fvm < Formula
       # Copy the version of the Dart VM we used into our lib directory so that if
       # the user upgrades their Dart VM version it doesn't break Sass's snapshot,
       # which was compiled with an older version.
-      cp dart/"dart", lib
+      cp _dart/"dart", lib
 
       (bin/"fvm").write <<~SH
         #!/bin/sh
