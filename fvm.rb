@@ -13,7 +13,7 @@ class Fvm < Formula
       # Tell the pub server where these installations are coming from.
       ENV["PUB_ENVIRONMENT"] = "homebrew:fvm"
 
-      system dart/"pub", "get"
+      system _dart/"dart", "pub", "get"
       # Build a native-code executable on 64-bit systems only. 32-bit Dart
       # doesn't support this.
       if Hardware::CPU.is_64_bit?
@@ -38,20 +38,21 @@ class Fvm < Formula
       @_version ||= YAML.safe_load(File.read("pubspec.yaml"))["version"]
     end
     
-    
     def _install_native_executable
-      system _dart/"dart2native", "-Dversion=#{version}", "bin/main.dart",
-              "-o", "fvm"
+      system _dart/"dart", "compile", "exe", "-Dversion=#{_version}",
+             "bin/main.dart", "-o", "fvm"
       bin.install "fvm"
     end
+    
+
 
     def _install_script_snapshot
-      system _dart/"dart",
-              "-Dversion=#{version}",
-              "--snapshot=main.dart.app.snapshot",
-              "--snapshot-kind=app-jit",
-              "bin/main.dart", "version"
+      system _dart/"dart", "compile", "jit-snapshot",
+            "-Dversion=#{_version}",
+            "-o", "main.dart.app.snapshot",
+            "bin/main.dart"
       lib.install "main.dart.app.snapshot"
+
 
       # Copy the version of the Dart VM we used into our lib directory so that if
       # the user upgrades their Dart VM version it doesn't break Sass's snapshot,
@@ -62,6 +63,7 @@ class Fvm < Formula
         #!/bin/sh
         exec "#{lib}/dart" "#{lib}/main.dart.app.snapshot" "$@"
       SH
+
     end
 end
   
