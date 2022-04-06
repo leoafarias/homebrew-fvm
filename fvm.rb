@@ -3,8 +3,8 @@ require "yaml"
 class Fvm < Formula
   desc "Simple cli to manage Flutter SDK versions per project"
   homepage "https://github.com/fluttertools/fvm"
-  url "https://github.com/fluttertools/fvm/archive/2.2.6.tar.gz"
-  sha256 "f7a07ae97f2ce18dd3f87e0003ddba9e7d32cbcfc6956c30191e3fec7bc128b2"
+  url "https://github.com/fluttertools/fvm/archive/2.3.0.tar.gz"
+  sha256 "7ac0cca62b8665ddbeb1f577d25907b98bf615a822309e95ef6304da7b15e78a"
   license "MIT"
 
   depends_on "dart-lang/dart/dart" => :build
