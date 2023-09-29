@@ -40,7 +40,7 @@ class FvmAT300Beta1 < Formula
 
   def _install_native_executable
     system _dart/"dart", "compile", "exe", "-Dversion=#{_version}",
-           "bin/main.dart", "-o", "fvm"
+           "bin/fvm.dart", "-o", "fvm"
     bin.install "fvm"
   end
 
@@ -48,7 +48,7 @@ class FvmAT300Beta1 < Formula
     system _dart/"dart", "compile", "jit-snapshot",
            "-Dversion=#{_version}",
            "-o", "main.dart.app.snapshot",
-           "bin/main.dart"
+           "bin/fvm.dart"
     lib.install "main.dart.app.snapshot"
 
     
