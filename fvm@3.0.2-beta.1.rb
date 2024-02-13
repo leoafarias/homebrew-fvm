@@ -1,6 +1,6 @@
 require "yaml"
 
-class FvmLinux < Formula
+class FvmAT302Beta1 < Formula
   desc "Simple cli to manage Flutter SDK versions per project"
   homepage "https://github.com/leoafarias/fvm"
   url "https://github.com/leoafarias/fvm/archive/3.0.2.tar.gz"
