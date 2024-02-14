@@ -8,12 +8,18 @@ class Fvm < Formula
   license "MIT"
 
   # Determine architecture and set the Dart SDK resource accordingly
-  dart_sdk_url, dart_sdk_sha = if Hardware::CPU.intel?
+  dart_sdk_url, dart_sdk_sha = if OS.mac? && Hardware::CPU.intel?
     ["https://storage.googleapis.com/dart-archive/channels/stable/release/3.2.6/sdk/dartsdk-macos-x64-release.zip",
      "97661f20230686381f4fc5b05a63c6b5d5abc9570bf93ad4e5fc09309cd98517"]
-  elsif Hardware::CPU.arm?
+  elsif OS.mac? && Hardware::CPU.arm?
     ["https://storage.googleapis.com/dart-archive/channels/stable/release/3.2.6/sdk/dartsdk-macos-arm64-release.zip",
      "2e04c91039f9cc05b2e93ce788aa1ce08bc4df5b50c84d6b4e21ba2b2538adb6"]
+  elsif OS.linux? && Hardware::CPU.intel?
+    ["https://storage.googleapis.com/dart-archive/channels/stable/release/3.2.6/sdk/dartsdk-linux-x64-release.zip",
+     "253390a14f6f5d764c82df4b2c2cf18a1c30a8e1fe0849448cc4fedabaaf1d48"]
+  elsif OS.linux? && Hardware::CPU.arm?
+    ["https://storage.googleapis.com/dart-archive/channels/stable/release/3.2.6/sdk/dartsdk-linux-arm64-release.zip",
+     "9818a37dd39e8e91a0159bdd2522213f9d36bbd99b715465b4606190e6ae41c3"]
   end
 
   resource "dart-sdk" do
