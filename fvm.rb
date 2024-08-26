@@ -3,8 +3,8 @@ require "yaml"
 class Fvm < Formula
   desc "Simple cli to manage Flutter SDK versions per project"
   homepage "https://github.com/leoafarias/fvm"
-  url "https://github.com/leoafarias/fvm/archive/3.2.0.tar.gz"
-  sha256 "50aed46957c4149f88682e9ac062c8aeb44a8da0b023a49aa8e3eb4cd570d72e"
+  url "https://github.com/leoafarias/fvm/archive/3.2.1.tar.gz"
+  sha256 "d4d524a5e1d7c5160b17ee9c3b2dd4482224d2e1c27c8d494fa0290ae818cd41"
   license "MIT"
 
   # Determine architecture and set the Dart SDK resource accordingly
