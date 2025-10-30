@@ -1,45 +1,55 @@
-require "yaml"
+# frozen_string_literal: true
+
+require 'yaml'
+require 'net/http'
+require 'uri'
 
 class Fvm < Formula
-  desc "Simple cli to manage Flutter SDK versions per project"
-  homepage "https://github.com/leoafarias/fvm"
-  url "https://github.com/leoafarias/fvm/archive/4.0.0.tar.gz"
-  sha256 "18cf7634d36031e44bc46f482c8d5514c3341d1412ed82dc61ff97dbf829d1ab"
-  license "MIT"
+  desc 'Simple cli to manage Flutter SDK versions per project'
+  homepage 'https://github.com/leoafarias/fvm'
+  url 'https://github.com/leoafarias/fvm/archive/4.0.0.tar.gz'
+  sha256 '18cf7634d36031e44bc46f482c8d5514c3341d1412ed82dc61ff97dbf829d1ab'
+  license 'MIT'
+  DART_SDK_VERSION = '3.9.4'
+  DART_SDK_URL_TEMPLATE = "https://storage.googleapis.com/dart-archive/channels/stable/release/#{DART_SDK_VERSION}/sdk/dartsdk-%s-release.zip"
 
-  # Determine architecture and set the Dart SDK resource accordingly
-  dart_sdk_url, dart_sdk_sha = if OS.mac? && Hardware::CPU.intel?
-    ["https://storage.googleapis.com/dart-archive/channels/stable/release/3.2.6/sdk/dartsdk-macos-x64-release.zip",
-     "97661f20230686381f4fc5b05a63c6b5d5abc9570bf93ad4e5fc09309cd98517"]
-  elsif OS.mac? && Hardware::CPU.arm?
-    ["https://storage.googleapis.com/dart-archive/channels/stable/release/3.2.6/sdk/dartsdk-macos-arm64-release.zip",
-     "2e04c91039f9cc05b2e93ce788aa1ce08bc4df5b50c84d6b4e21ba2b2538adb6"]
-  elsif OS.linux? && Hardware::CPU.intel?
-    ["https://storage.googleapis.com/dart-archive/channels/stable/release/3.2.6/sdk/dartsdk-linux-x64-release.zip",
-     "253390a14f6f5d764c82df4b2c2cf18a1c30a8e1fe0849448cc4fedabaaf1d48"]
-  elsif OS.linux? && Hardware::CPU.arm?
-    ["https://storage.googleapis.com/dart-archive/channels/stable/release/3.2.6/sdk/dartsdk-linux-arm64-release.zip",
-     "9818a37dd39e8e91a0159bdd2522213f9d36bbd99b715465b4606190e6ae41c3"]
-  end
+  platform = if OS.mac? && Hardware::CPU.intel?
+               'macos-x64'
+             elsif OS.mac? && Hardware::CPU.arm?
+               'macos-arm64'
+             elsif OS.linux? && Hardware::CPU.intel?
+               'linux-x64'
+             elsif OS.linux? && Hardware::CPU.arm?
+               'linux-arm64'
+             end
+  platform_dart_sdk_url = DART_SDK_URL_TEMPLATE % platform
+  dart_sdk_sha256 = URI("#{platform_dart_sdk_url}.sha256sum").then do |uri|
+    Net::HTTP.new(uri.host, uri.port).then do |https|
+      https.use_ssl = true
+      Net::HTTP::Get.new(uri)
+                    .then { |request| https.request(request) }
+                    .read_body
+    end
+  end.split.first
 
-  resource "dart-sdk" do
-    url dart_sdk_url
-    sha256 dart_sdk_sha
+  resource 'dart-sdk' do
+    url platform_dart_sdk_url
+    sha256 dart_sdk_sha256
   end
 
   def install
     # Resource installation for Dart SDK
-    resource("dart-sdk").stage do
-      libexec.install Dir["*"] # Assumes Dart SDK zip layout matches what's expected
+    resource('dart-sdk').stage do
+      libexec.install Dir['*'] # Assumes Dart SDK zip layout matches what's expected
     end
 
-    ENV["PUB_ENVIRONMENT"] = "homebrew:fvm"
-    
+    ENV['PUB_ENVIRONMENT'] = 'homebrew:fvm'
+
     # Adjust paths to use the vendored Dart SDK
-    dart = libexec/"bin/dart"
-    
-    system dart, "pub", "get"
-    
+    dart = libexec/'bin/dart'
+
+    system dart, 'pub', 'get'
+
     if Hardware::CPU.is_64_bit?
       _install_native_executable(dart)
     else
@@ -49,31 +59,31 @@ class Fvm < Formula
   end
 
   test do
-    system "false"
+    system 'false'
   end
 
   private
 
   def _version
-    @_version ||= YAML.safe_load(File.read("pubspec.yaml"))["version"]
+    @_version ||= YAML.safe_load(File.read('pubspec.yaml'))['version']
   end
 
   def _install_native_executable(dart)
-    system dart, "compile", "exe", "-Dversion=#{_version}",
-           "bin/main.dart", "-o", "fvm"
-    bin.install "fvm"
+    system dart, 'compile', 'exe', "-Dversion=#{_version}",
+           'bin/main.dart', '-o', 'fvm'
+    bin.install 'fvm'
   end
 
   def _install_script_snapshot(dart)
-    system dart, "compile", "jit-snapshot",
+    system dart, 'compile', 'jit-snapshot',
            "-Dversion=#{_version}",
-           "-o", "main.dart.app.snapshot",
-           "bin/main.dart"
-    lib.install "main.dart.app.snapshot"
-    
+           '-o', 'main.dart.app.snapshot',
+           'bin/main.dart'
+    lib.install 'main.dart.app.snapshot'
+
     cp dart, lib
 
-    (bin/"fvm").write <<~SH
+    (bin/'fvm').write <<~SH
       #!/bin/sh
       exec "#{lib}/dart" "#{lib}/main.dart.app.snapshot" "$@"
     SH
