@@ -8,18 +8,19 @@ class FvmAT400Beta2 < Formula
   license "MIT"
 
   # Determine architecture and set the Dart SDK resource accordingly
+  dart_sdk_version = "3.6.0"
   dart_sdk_url, dart_sdk_sha = if OS.mac? && Hardware::CPU.intel?
-    ["https://storage.googleapis.com/dart-archive/channels/stable/release/3.2.6/sdk/dartsdk-macos-x64-release.zip",
-     "97661f20230686381f4fc5b05a63c6b5d5abc9570bf93ad4e5fc09309cd98517"]
+    ["https://storage.googleapis.com/dart-archive/channels/stable/release/#{dart_sdk_version}/sdk/dartsdk-macos-x64-release.zip",
+     "b859b1abd92997b389061be6b301e598a3edcbf7e092cfe5b8d6ce2acdf0732b"]
   elsif OS.mac? && Hardware::CPU.arm?
-    ["https://storage.googleapis.com/dart-archive/channels/stable/release/3.2.6/sdk/dartsdk-macos-arm64-release.zip",
-     "2e04c91039f9cc05b2e93ce788aa1ce08bc4df5b50c84d6b4e21ba2b2538adb6"]
+    ["https://storage.googleapis.com/dart-archive/channels/stable/release/#{dart_sdk_version}/sdk/dartsdk-macos-arm64-release.zip",
+     "1bdbc6544aaa53673e7cbbf66ad7cde914cb7598936ebbd6a4245e1945a702a0"]
   elsif OS.linux? && Hardware::CPU.intel?
-    ["https://storage.googleapis.com/dart-archive/channels/stable/release/3.2.6/sdk/dartsdk-linux-x64-release.zip",
-     "253390a14f6f5d764c82df4b2c2cf18a1c30a8e1fe0849448cc4fedabaaf1d48"]
+    ["https://storage.googleapis.com/dart-archive/channels/stable/release/#{dart_sdk_version}/sdk/dartsdk-linux-x64-release.zip",
+     "8e14ff436e1eec72618dabc94f421a97251f2068c9cc9ad2d3bb9d232d6155a3"]
   elsif OS.linux? && Hardware::CPU.arm?
-    ["https://storage.googleapis.com/dart-archive/channels/stable/release/3.2.6/sdk/dartsdk-linux-arm64-release.zip",
-     "9818a37dd39e8e91a0159bdd2522213f9d36bbd99b715465b4606190e6ae41c3"]
+    ["https://storage.googleapis.com/dart-archive/channels/stable/release/#{dart_sdk_version}/sdk/dartsdk-linux-arm64-release.zip",
+     "0f82f10f808c7003d0d03294ae9220b5e0824ab3d2d19b4929d4fa735254e7bf"]
   end
 
   resource "dart-sdk" do
