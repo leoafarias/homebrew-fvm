@@ -3,7 +3,7 @@ require "yaml"
 class Fvm < Formula
   desc "Simple cli to manage Flutter SDK versions per project"
   homepage "https://github.com/leoafarias/fvm"
-  url "https://github.com/leoafarias/fvm/archive/4.1.0.tar.gz"
+  url "https://github.com/leoafarias/fvm/archive/refs/tags/4.1.0.tar.gz"
   sha256 "44f24d6bef61f78fef509415bc8974fcd60c5ffe937f9a4d9b17fe26c55670a2"
   license "MIT"
 
@@ -35,12 +35,12 @@ class Fvm < Formula
     end
 
     ENV["PUB_ENVIRONMENT"] = "homebrew:fvm"
-    
+
     # Adjust paths to use the vendored Dart SDK
     dart = libexec/"bin/dart"
-    
+
     system dart, "pub", "get"
-    
+
     if Hardware::CPU.is_64_bit?
       _install_native_executable(dart)
     else
@@ -56,7 +56,7 @@ class Fvm < Formula
   private
 
   def _version
-    @_version ||= YAML.safe_load(File.read("pubspec.yaml"))["version"]
+    @_version ||= YAML.safe_load_file("pubspec.yaml")["version"]
   end
 
   def _install_native_executable(dart)
@@ -71,7 +71,7 @@ class Fvm < Formula
            "-o", "main.dart.app.snapshot",
            "bin/main.dart"
     lib.install "main.dart.app.snapshot"
-    
+
     cp dart, lib
 
     (bin/"fvm").write <<~SH
